@@ -1,65 +1,70 @@
-## **Turing Test Quiz: Baseball Game using PHP**
+## **Toptal Practice question using Javascript**
 
-<p>You are keeping score for a baseball game with strange rules. The game consists of several rounds. Where the scores of past rounds may affect future round scores.
-At the beginning of the game, you start with an empty record. You are given a list of string ops, where ops[i] is the ith operation you must apply to the record and is one of the following:
+<p>Write a function:
 
--  An integer x - Record a new score of x.
-- "+" - Record a new score that is the sum of the previous two scores. It is guaranteed there will always be two previous scores.
-- "D" - Record a new score that is double the previous score. It is guaranteed there will always be a previous score
-- "C" - Invalidate the previous score, removing it from the record. It is guaranteed there will always be a previous score.
-Return the sum of all the scores on the record.
+    function solution(A);
 
-**Example 1:**
+that, given an array A of N integers, returns the smallest positive integer (greater than 0) that does not occur in A.
 
-```php 
-Input: ops = ["5","2","C","D","+"]
-```
+For example, given A = [1, 3, 6, 4, 1, 2], the function should return 5.
 
-**Output: 30**
+Given A = [1, 2, 3], the function should return 4.
 
-**Example 2:**
-```php
-Input: ops = ["5","-2","4","C","D","9","+","+"]
-```
-**Output: 27**
+Given A = [−1, −3], the function should return 1.
 
-```php
-TestCase: ["5","2","C","D","+"]
-```
-</p>
+Write an efficient algorithm for the following assumptions:
+
+        N is an integer within the range [1..100,000];
+        each element of array A is an integer within the range [−1,000,000..1,000,000].
 
 
-```php
-class Solution{
-	function calPoints($ops){
-		$array = array();
-		$score = 0;
-		for ($i=0; $i < count($ops); $i++) { 
-			$eachrec =  $ops[$i];
-			if(is_numeric($eachrec)){
-				array_push($array, $eachrec);
-			}	
-			elseif ($eachrec == "C") {
-				array_pop($array);
-			}elseif ($eachrec == "D") {
-				$last = end($array);
-				$mul = 2 * $last;
-				array_push($array, $mul);
-			}elseif ($eachrec == "+") {
-				$last = end($array);
-				$sl = $array[count($array)-2]; 
-				$res = $last + $sl;
-				array_push($array, $res);
-			}
-		}		
-		for ($i=0; $i < count($array) ; $i++) { 
-			$score = $score + $array[$i];
-		}
-		return $score;		
+```javascript
+	//Generate an array ranging from 0 - largest elemnt found in array "A"
+	let largestArray = []
+
+	//Find the smallest element in the array
+	function findSmallest(array){                
+		Array.min = function( array ){
+			return Math.min.apply( Math, array );
+		};
+		var minimum = Array.min(array);
+		return minimum;
 	}
-}
-$ops = ["5","2","C","D","+"];
-$soluton = new Solution();
-$output = $soluton->calPoints($ops);
-echo $output;
+
+	//Create new array from the largest element in the test array
+	function createNewArray(largest){
+		let count = 1;
+		for (let index = 0; index < largest; index++) {                    
+			largestArray.push(count++)                    
+		}                 
+	}
+
+	//Get the difference between the test array and the array generated 
+	//from the largest element in the test array
+	function getDifference(A, largest){
+		createNewArray(largest)
+		let difference = largestArray.filter(x => !A.includes(x));    
+
+		// return difference;
+		if(difference.length > 0) return findSmallest(difference)   
+		else return largest + 1; 
+	}
+
+	function solution(A){
+		let largest = 0                
+		for (let i = 0; i < A.length; i++) {
+			const element = A[i];
+			if (element > largest){
+				largest = element;
+			}                    
+		}
+		return getDifference(A, largest)
+		// console.log(getDifference(A, largest))                
+	}
+
+	let A = [1, 3, 6, 4, 1, 2,7, 10,9];
+	// let A = [1, 2, 3];
+	// let A = [-1, -3];
+
+	solution(A);
 ```
